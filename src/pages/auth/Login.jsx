@@ -41,6 +41,7 @@ export const Login = () => {
       } else {
         setMsgError("");
         login(user, pass);
+        //Se redirige al usuario con la ruta protegida a /Inicio
       }
     } catch (err) {
       setMsgError(err.message);
@@ -85,17 +86,18 @@ export const Login = () => {
             />
           </div>
           <input
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer"
             value="Inicia sesión"
             type="submit"
           />
+          {msgError !== "" ? (
+            <div className="text-red-500 mt-3 text-center font-semibold">
+              {msgError}
+            </div>
+          ) : (
+            <></>
+          )}
         </form>
-
-        {msgError !== "" ? (
-          <div className="text-red-500 mt-3">{msgError}</div>
-        ) : (
-          <span></span>
-        )}
       </div>
     </div>
   );

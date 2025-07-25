@@ -4,6 +4,7 @@ import { Logo } from "./Logo";
 import { MenuItems } from "./MenuItems";
 
 import { useAuth } from "../context/AuthProvider";
+import { BtnMenuItems } from "./BtnMenuItems";
 
 export const Menu = () => {
   const { currentUser, logout } = useAuth();
@@ -63,21 +64,7 @@ export const Menu = () => {
               </button>
             </div>
             <div className="hidden md:ml-6 md:flex md:items-center">
-              {currentUser ? (
-                <Link
-                  onClick={logout}
-                  className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Cerrar sesion
-                </Link>
-              ) : (
-                <Link
-                  to="/auth/login"
-                  className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Ir al login
-                </Link>
-              )}
+              <BtnMenuItems mobile={false} />
             </div>
           </div>
         </div>
@@ -91,21 +78,7 @@ export const Menu = () => {
       >
         <div className="pt-2 pb-3 space-y-1 px-4">
           <MenuItems mobile={true} />
-          {currentUser ? (
-            <Link
-              onClick={logout}
-              className="block text-center w-full mt-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Cerrar sesion
-            </Link>
-          ) : (
-            <Link
-              to="/auth/login"
-              className="block text-center w-full mt-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Ir al login
-            </Link>
-          )}
+          <BtnMenuItems mobile={true} />
         </div>
       </div>
     </div>

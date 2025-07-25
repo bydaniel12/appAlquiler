@@ -10,7 +10,7 @@ export const ProtectedRouter = ({ children }) => {
   }
 
   if (!currentUser) {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
