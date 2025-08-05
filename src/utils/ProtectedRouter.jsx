@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthProvider";
 export const ProtectedRouter = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
-  console.log("ProtectedRouter currentUser:", currentUser);
   if (loading) {
     return <div>Loading...</div>;
   }

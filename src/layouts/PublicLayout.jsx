@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import { Menu } from "../components/Menu";
+import { Footer } from "../components/Footer";
 
 export const PublicLayout = () => {
   return (
@@ -12,7 +13,7 @@ export const PublicLayout = () => {
         <Outlet />
       </main>
 
-      <footer>Public Footer </footer>
+      <Footer />
     </div>
   );
 };

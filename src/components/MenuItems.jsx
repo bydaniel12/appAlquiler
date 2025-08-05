@@ -14,20 +14,12 @@ export const MenuItems = ({ mobile }) => {
           >
             Inquilinos
           </NavLink>
-
           <NavLink
             className="px-3 py-2 rounded-md text-sm font-medium md:text-gray-700 md:hover:bg-gray-100 md:hover:text-gray-900 max-md:block max-md:text-gray-900 max-md:hover:bg-gray-200"
-            to="/BusquedaxDni"
+            to="/search-payment"
             end
           >
-            Busca tu recibo x DNI
-          </NavLink>
-          <NavLink
-            className="px-3 py-2 rounded-md text-sm font-medium md:text-gray-700 md:hover:bg-gray-100 md:hover:text-gray-900 max-md:block max-md:text-gray-900 max-md:hover:bg-gray-200"
-            to="/BusquedaxFecha"
-            end
-          >
-            Busca tu recibo x Fecha
+            Buscar Boletas x Fecha
           </NavLink>
         </>
       ) : (

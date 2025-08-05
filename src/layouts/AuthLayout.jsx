@@ -1,6 +1,7 @@
 import { Link, Navigate, Outlet } from "react-router";
 import { useAuth } from "../context/AuthProvider";
 import { Menu } from "../components/Menu.jsx";
+import { Footer } from "../components/Footer.jsx";
 
 export const AuthLayout = () => {
   const { currentUser } = useAuth();
@@ -16,6 +17,7 @@ export const AuthLayout = () => {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };
