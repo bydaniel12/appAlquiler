@@ -97,9 +97,9 @@ export const TenantList = () => {
                         Numero Medidor de luz inicial:{" "}
                       </span>
                       {tenant.lightMeter ? (
-                        <div>{tenant.numberKilowatsInit}</div>
+                        <span>{tenant.numberKilowatsInit}</span>
                       ) : (
-                        "No tiene"
+                        <span>No tiene</span>
                       )}
                     </p>
                     <p className="text-gray-800">

@@ -62,25 +62,12 @@ export const PaymentForm = ({
   };
 
   const calcularKilowats = () => {
+    let calKilowats = 0;
     if (formData.kilowats) {
       if (tenantLightMeter && tenantNumberKilowatsInit) {
         if (listPayments.length === 0) {
           if (Number(formData.kilowats) >= tenantNumberKilowatsInit) {
-            const calcKilowats =
-              Number(formData.kilowats) - tenantNumberKilowatsInit;
-            let montoTotal = 0;
-            if (calcKilowats <= 90) {
-              montoTotal = Number.parseFloat(calcKilowats * 1.0).toFixed(0);
-            } else if (calcKilowats <= 120) {
-              montoTotal = Number.parseFloat(calcKilowats * 1.1).toFixed(0);
-            } else if (calcKilowats <= 150) {
-              montoTotal = Number.parseFloat(calcKilowats * 1.2).toFixed(0);
-            }
-            setFormData({
-              ...formData,
-              mesxkilowats: calcKilowats.toString(),
-              montoxkilowats: montoTotal.toString(),
-            });
+            calKilowats = Number(formData.kilowats) - tenantNumberKilowatsInit;
             setError("");
           } else {
             setError(
@@ -88,37 +75,45 @@ export const PaymentForm = ({
             );
           }
         } else {
-          listPayments.map((payment) => {
-            if (payment.active) {
+          for (const payment of listPayments) {
+            if (payment.active && payment.kilowats) {
               if (Number(formData.kilowats) >= payment.kilowats) {
-                const calcKilowats =
-                  Number(formData.kilowats) - payment.kilowats;
-                let montoTotal = 0;
-                if (calcKilowats <= 90) {
-                  montoTotal = Number.parseFloat(calcKilowats * 1.0).toFixed(0);
-                } else if (calcKilowats <= 120) {
-                  montoTotal = Number.parseFloat(calcKilowats * 1.1).toFixed(0);
-                } else if (calcKilowats <= 150) {
-                  montoTotal = Number.parseFloat(calcKilowats * 1.2).toFixed(0);
-                }
-                setFormData({
-                  ...formData,
-                  mesxkilowats: calcKilowats.toString(),
-                  montoxkilowats: montoTotal.toString(),
-                });
+                calKilowats = Number(formData.kilowats) - payment.kilowats;
                 setError("");
+                break;
               } else {
                 setError(
                   "Error: Ingrese un valor mayor o igual al valor del ultimo mes en el campo kilowats"
                 );
               }
+            } else {
+              if (Number(formData.kilowats) >= tenantNumberKilowatsInit) {
+                calKilowats =
+                  Number(formData.kilowats) - tenantNumberKilowatsInit;
+                setError("");
+              } else {
+                setError(
+                  "Error: Ingrese un valor mayor o igual al valor del kilowats inicial"
+                );
+              }
             }
-          });
+          }
         }
-
-        //setFormData({ ...formData, mesxkilowats: "0", montoxkilowats: "0" });
-      } else {
-        console.info("tenantNumberKilowatsInit : " + tenantNumberKilowatsInit);
+        let montoTotal = 0;
+        if (calKilowats <= 90) {
+          montoTotal = Number.parseFloat(calKilowats * 1.0).toFixed(0);
+        } else if (calKilowats <= 120) {
+          montoTotal = Number.parseFloat(calKilowats * 1.1).toFixed(0);
+        } else if (calKilowats <= 150) {
+          montoTotal = Number.parseFloat(calKilowats * 1.2).toFixed(0);
+        } else {
+          montoTotal = Number.parseFloat(calKilowats * 1.3).toFixed(0);
+        }
+        setFormData({
+          ...formData,
+          mesxkilowats: calKilowats.toString(),
+          montoxkilowats: montoTotal.toString(),
+        });
       }
     } else {
       setError(

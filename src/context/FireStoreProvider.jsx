@@ -173,7 +173,7 @@ export function FireStoreProvider({ children }) {
         tenantId,
         "payments"
       );
-      const q = query(paymentRef, orderBy("kilowats", "desc"), limit(10));
+      const q = query(paymentRef, orderBy("fecha", "desc"), limit(10));
       const querySnapshot = await getDocs(q);
       return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
