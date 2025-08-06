@@ -36,6 +36,8 @@ export const TenantList = () => {
         name: tenant.name,
         rent: tenant.rent,
         phone: tenant.phone,
+        lightMeter: tenant.lightMeter,
+        numberKilowatsInit: tenant.numberKilowatsInit,
       },
     });
   };
@@ -91,6 +93,16 @@ export const TenantList = () => {
                       {tenant.name} - {tenant.dni}
                     </h3>
                     <p className="text-gray-800">
+                      <span className="font-semibold">
+                        Numero Medidor de luz inicial:{" "}
+                      </span>
+                      {tenant.lightMeter ? (
+                        <div>{tenant.numberKilowatsInit}</div>
+                      ) : (
+                        "No tiene"
+                      )}
+                    </p>
+                    <p className="text-gray-800">
                       <span className="font-semibold">telefono: </span>
                       {tenant.phone}
                     </p>
@@ -115,7 +127,7 @@ export const TenantList = () => {
                       {tenant.dateInit}
                     </p>
                     <p className="text-gray-800">
-                      <span className="font-semibold">Fecha de Termino: </span>{" "}
+                      <span className="font-semibold">Fecha de Salida: </span>{" "}
                       {tenant.dateFin}
                     </p>
                   </div>
@@ -140,7 +152,7 @@ export const TenantList = () => {
                     onClick={() => handleGoToPayments(tenant)}
                     className="bg-black text-white px-2 py-1 rounded hover:bg-gray-900 cursor-pointer"
                   >
-                    Ver Pagos
+                    Boletas
                   </button>
                 </div>
               </li>

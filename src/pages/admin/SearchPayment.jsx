@@ -149,9 +149,35 @@ export const SearchPayment = () => {
       </form>
       {searchResult && (
         <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100 animate-fade-in">
-          <h3 className="text-lg font-semibold text-blue-800 mb-2">
+          <h3 className="text-xl font-semibold text-blue-600 mb-2 text-center">
             Resultados de búsqueda
           </h3>
+          {/* Suma total del agua, luz y renta */}
+          {searchResult.payments.length > 0 && (
+            <div className="mb-4 text-black font-semibold text-center">
+              <div>
+                Total Agua: S/
+                {searchResult.payments.reduce(
+                  (acc, p) => acc + (Number(p.agua) || 0),
+                  0
+                )}
+              </div>
+              <div>
+                Total Luz: S/
+                {searchResult.payments.reduce(
+                  (acc, p) => acc + (Number(p.montoxkilowats) || 0),
+                  0
+                )}
+              </div>
+              <div>
+                Total Renta: S/
+                {searchResult.payments.reduce(
+                  (acc, p) => acc + (Number(p.rent) || 0),
+                  0
+                )}
+              </div>
+            </div>
+          )}
           <ul className="mt-4 divide-y divide-blue-100">
             {searchResult.payments.length === 0 ? (
               <div>No hay Boletas en el rango de fechas indicadas</div>

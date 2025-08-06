@@ -7,11 +7,12 @@ export const PaymentForm = ({
   handlePaymentAdd,
   beanEditPayment,
   listPayments,
+  tenantLightMeter,
+  tenantNumberKilowatsInit,
 }) => {
   const { addPayment, updatePaymentsActive, updatePayment } = useFireStore();
   const [error, setError] = useState("");
   const { tenantId } = useParams();
-
   const [formData, setFormData] = useState(() => {
     if (beanEditPayment !== null) {
       return {
@@ -62,32 +63,67 @@ export const PaymentForm = ({
 
   const calcularKilowats = () => {
     if (formData.kilowats) {
-      if (listPayments.length === 0) {
-        setFormData({ ...formData, mesxkilowats: "0", montoxkilowats: "0" });
-      } else {
-        listPayments.map((payment) => {
-          if (payment.active) {
-            if (Number(formData.kilowats) >= payment.kilowats) {
-              const calcKilowats = Number(formData.kilowats) - payment.kilowats;
-              const montoTotal = Number.parseFloat(calcKilowats * 1.0).toFixed(
-                0
-              );
-              setFormData({
-                ...formData,
-                mesxkilowats: calcKilowats.toString(),
-                montoxkilowats: montoTotal.toString(),
-              });
-              setError("");
-            } else {
-              setError(
-                "Error: Ingrese un valor mayor o igual al valor del ultimo mes en el campo kilowats"
-              );
+      if (tenantLightMeter && tenantNumberKilowatsInit) {
+        if (listPayments.length === 0) {
+          if (Number(formData.kilowats) >= tenantNumberKilowatsInit) {
+            const calcKilowats =
+              Number(formData.kilowats) - tenantNumberKilowatsInit;
+            let montoTotal = 0;
+            if (calcKilowats <= 90) {
+              montoTotal = Number.parseFloat(calcKilowats * 1.0).toFixed(0);
+            } else if (calcKilowats <= 120) {
+              montoTotal = Number.parseFloat(calcKilowats * 1.1).toFixed(0);
+            } else if (calcKilowats <= 150) {
+              montoTotal = Number.parseFloat(calcKilowats * 1.2).toFixed(0);
             }
+            setFormData({
+              ...formData,
+              mesxkilowats: calcKilowats.toString(),
+              montoxkilowats: montoTotal.toString(),
+            });
+            setError("");
+          } else {
+            setError(
+              "Error: Ingrese un valor mayor o igual al valor del ultimo mes en el campo kilowats"
+            );
           }
-        });
+        } else {
+          listPayments.map((payment) => {
+            if (payment.active) {
+              if (Number(formData.kilowats) >= payment.kilowats) {
+                const calcKilowats =
+                  Number(formData.kilowats) - payment.kilowats;
+                let montoTotal = 0;
+                if (calcKilowats <= 90) {
+                  montoTotal = Number.parseFloat(calcKilowats * 1.0).toFixed(0);
+                } else if (calcKilowats <= 120) {
+                  montoTotal = Number.parseFloat(calcKilowats * 1.1).toFixed(0);
+                } else if (calcKilowats <= 150) {
+                  montoTotal = Number.parseFloat(calcKilowats * 1.2).toFixed(0);
+                }
+                setFormData({
+                  ...formData,
+                  mesxkilowats: calcKilowats.toString(),
+                  montoxkilowats: montoTotal.toString(),
+                });
+                setError("");
+              } else {
+                setError(
+                  "Error: Ingrese un valor mayor o igual al valor del ultimo mes en el campo kilowats"
+                );
+              }
+            }
+          });
+        }
+
+        //setFormData({ ...formData, mesxkilowats: "0", montoxkilowats: "0" });
+      } else {
+        console.info("tenantNumberKilowatsInit : " + tenantNumberKilowatsInit);
       }
     } else {
-      setError("Error: Ingresa el valor que marca su medidor");
+      setError(
+        "Error: Ingresa el valor que marca su medidor en campo el kilowats"
+      );
     }
   };
 
@@ -98,153 +134,201 @@ export const PaymentForm = ({
           {beanEditPayment ? "Actualizar boleta" : "Agregar boleta"}
         </h2>
         <form onSubmit={handleSubmit}>
-          <p className="text-black">Calculo de la luz</p>
-          <div className="border-1 p-4 border-gray-400 mb-2 rounded-2xl">
-            <div className="flex justify-between items-start">
-              <div className="">
-                <label htmlFor="kilowats" className="block mb-1 text-black">
-                  Kilowats:
-                </label>
+          <div className="flex justify-start">
+            <p className="text-black">
+              {tenantLightMeter
+                ? "Ingresa el valor de kilowats para el calculo de la Luz"
+                : "Ingresa el monto de Luz"}
+            </p>
+          </div>
+          <div className="border-1 py-1 px-4 border-gray-400 mb-2 rounded-2xl">
+            {tenantLightMeter ? (
+              <div>
+                <div className="flex justify-between">
+                  <div className="mt-4">
+                    <label htmlFor="kilowats" className="relative">
+                      <input
+                        type="number"
+                        name="kilowats"
+                        id="kilowats"
+                        placeholder=""
+                        value={formData.kilowats}
+                        onChange={handleChange}
+                        required={tenantLightMeter}
+                        disabled={beanEditPayment ? true : false}
+                        className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
+                      />
+                      <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                        Kilowats
+                      </span>
+                    </label>
+                  </div>
+                  <input
+                    className={`  px-4 py-2 rounded  max-h-9 mt-5 ${
+                      beanEditPayment
+                        ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300 text-gray-700"
+                        : "cursor-pointer bg-blue-500 hover:bg-blue-600 text-white"
+                    }`}
+                    onClick={calcularKilowats}
+                    type="button"
+                    disabled={beanEditPayment ? true : false}
+                    value="Calcular"
+                  />
+                </div>
+                <div className="my-4">
+                  <label htmlFor="mesxkilowats" className="relative">
+                    <input
+                      type="number"
+                      name="mesxkilowats"
+                      id="mesxkilowats"
+                      placeholder=""
+                      value={formData.mesxkilowats}
+                      onChange={handleChange}
+                      required={tenantLightMeter}
+                      readOnly
+                      disabled
+                      className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
+                    />
+                    <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                      Kilowats calculado
+                    </span>
+                  </label>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
+
+            <div className="my-4">
+              <label htmlFor="montoxkilowats" className="relative">
                 <input
-                  type="number"
-                  name="kilowats"
-                  placeholder="kilowats de medidor"
-                  value={formData.kilowats}
+                  type="text"
+                  name="montoxkilowats"
+                  id="montoxkilowats"
+                  placeholder=""
+                  value={formData.montoxkilowats}
                   onChange={handleChange}
                   required
-                  disabled={beanEditPayment ? true : false}
-                  className="w-full mb-1 p-1 border rounded max-sm:w-40"
+                  pattern="[0-9]*"
+                  className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
                 />
-              </div>
-              <input
-                className={`  px-4 py-1 rounded  max-h-9 mt-6 ${
-                  beanEditPayment
-                    ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300 text-gray-700"
-                    : "cursor-pointer bg-blue-500 hover:bg-blue-600 text-white"
-                }`}
-                onClick={calcularKilowats}
-                type="button"
-                disabled={beanEditPayment ? true : false}
-                value="Calcular"
-              />
-            </div>
-            <div>
-              <label htmlFor="mesxkilowats" className="block mb-1 text-black">
-                kilowats calculado con el ultimo registro:
+                <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                  Luz
+                </span>
               </label>
-              <input
-                type="number"
-                name="mesxkilowats"
-                placeholder="mesxkilowats"
-                value={formData.mesxkilowats}
-                onChange={handleChange}
-                required
-                readOnly
-                disabled
-                className="w-full mb-1 p-1 border rounded"
-              />
-            </div>
-            <div>
-              <label htmlFor="montoxkilowats" className="block mb-1 text-black">
-                Luz:
-              </label>
-              <input
-                type="number"
-                name="montoxkilowats"
-                placeholder="montoxkilowats"
-                value={formData.montoxkilowats}
-                onChange={handleChange}
-                required
-                readOnly
-                disabled
-                className="w-full mb-1 p-1 border rounded"
-              />
             </div>
           </div>
-          <div>
-            <label htmlFor="agua" className="block mb-1 text-black">
-              Agua:
+
+          <div className="my-4">
+            <label htmlFor="agua" className="relative">
+              <input
+                type="text"
+                name="agua"
+                id="agua"
+                placeholder=""
+                value={formData.agua}
+                onChange={handleChange}
+                required
+                pattern="[0-9]*"
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
+              />
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Agua
+              </span>
             </label>
-            <input
-              type="number"
-              name="agua"
-              placeholder="agua"
-              value={formData.agua}
-              onChange={handleChange}
-              required
-              className="w-full mb-1 p-1 border rounded"
-            />
-            <div>
-              <label htmlFor="internet" className="block mb-1 text-black">
-                Internet:
-              </label>
+          </div>
+
+          <div className="my-4">
+            <label htmlFor="internet" className="relative">
               <input
                 type="number"
                 name="internet"
-                placeholder="internet"
+                id="internet"
+                placeholder=""
                 value={formData.internet}
                 onChange={handleChange}
-                min={0}
-                className="w-full mb-1 p-1 border rounded"
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
-            </div>
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Internet
+              </span>
+              <span className="absolute inset-y-0 start-2 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                S/
+              </span>
+            </label>
+          </div>
 
-            <div>
-              <label htmlFor="deuda" className="block mb-1 text-black">
-                Deuda:
-              </label>
+          <div className="my-4">
+            <label htmlFor="deuda" className="relative">
               <input
                 type="number"
                 name="deuda"
-                placeholder="deuda"
+                id="deuda"
+                placeholder=""
                 value={formData.deuda}
                 onChange={handleChange}
-                min={0}
-                className="w-full mb-1 p-1 border rounded"
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
-            </div>
-            <div>
-              <label htmlFor="comment" className="block mb-1 text-black">
-                Comentario:
-              </label>
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Deuda
+              </span>
+            </label>
+          </div>
+
+          <div className="my-4">
+            <label htmlFor="comment" className="relative">
               <input
                 type="text"
                 name="comment"
-                placeholder="Comentario adicional"
+                id="comment"
+                placeholder=""
                 value={formData.comment}
                 onChange={handleChange}
-                className="w-full mb-1 p-1 border rounded"
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
-            </div>
-            <div>
-              <label htmlFor="status" className="block mb-1 text-black">
-                Estado
-              </label>
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Comentario
+              </span>
+            </label>
+          </div>
+
+          <div className="my-4">
+            <label htmlFor="status" className="relative">
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full mb-1 p-1 border rounded"
+                required
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               >
                 <option value="pending">Pendiente</option>
                 <option value="partial">Parcial</option>
                 <option value="completed">Completado</option>
               </select>
-            </div>
-            <div>
-              <label htmlFor="fecha" className="block mb-1 text-black">
-                Fecha del pago
-              </label>
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Estado
+              </span>
+            </label>
+          </div>
+
+          <div className="my-4">
+            <label htmlFor="fecha" className="relative">
               <input
                 type="date"
                 name="fecha"
+                id="fecha"
+                placeholder=""
                 value={formData.fecha}
                 onChange={handleChange}
                 required
-                className="w-full mb-1 p-1 border rounded"
+                className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
-            </div>
+              <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
+                Fecha de pago
+              </span>
+            </label>
           </div>
+
           {error !== "" ? (
             <div className="text-red-500 mt-2 text-center font-semibold">
               {error}

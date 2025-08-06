@@ -11,6 +11,8 @@ export const PaymentList = () => {
     name: tenantName,
     rent: tenantRent,
     phone: tenantPhone,
+    lightMeter: tenantLightMeter,
+    numberKilowatsInit: tenantNumberKilowatsInit,
   } = location.state || {};
   const { getPayments, deletePayment } = useFireStore();
   const [payments, setPayments] = useState([]);
@@ -32,6 +34,7 @@ export const PaymentList = () => {
     }
   }, [currentUser, getPayments, refreshPayments]);
 
+  /*
   const handleDelete = async (paymentId) => {
     try {
       await deletePayment(tenantId, paymentId);
@@ -40,6 +43,7 @@ export const PaymentList = () => {
       console.error("Error deleting tenant:", error);
     }
   };
+  */
 
   return (
     <div className="container mx-auto max-w-lg">
@@ -48,7 +52,7 @@ export const PaymentList = () => {
         <p className="text-lg text-gray-700">Teléfono: {tenantPhone}</p>
       </div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Detalle de Pagos</h2>
+        <h2 className="text-2xl font-bold">Boletas</h2>
         <button
           onClick={() => setShowPaymentForm(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
@@ -68,13 +72,15 @@ export const PaymentList = () => {
             setShowPaymentForm(false);
           }}
           beanEditPayment={editPayment}
+          tenantLightMeter={tenantLightMeter}
+          tenantNumberKilowatsInit={tenantNumberKilowatsInit}
         ></PaymentForm>
       )}
 
       <div className="bg-white shadow rounded-lg overflow-hidden items-center text-center">
         {payments.length === 0 ? (
           <div className="p-6 text-center text-gray-600">
-            No hay pagos registrados.
+            No hay Boletas registradas.
           </div>
         ) : (
           <ul className="divide-y divide-gray-200">
@@ -93,14 +99,21 @@ export const PaymentList = () => {
                       <span className="font-semibold">Estado: </span>{" "}
                       {payment.status}
                     </p>
-                    <p className="text-gray-800">
-                      <span className="font-semibold">Registro de kwts: </span>
-                      {payment.kilowats}
-                    </p>
-                    <p className="text-gray-800">
-                      <span className="font-semibold">Consumo kwts: </span>
-                      {payment.mesxkilowats}
-                    </p>
+                    {tenantLightMeter && tenantNumberKilowatsInit && (
+                      <>
+                        <p className="text-gray-800">
+                          <span className="font-semibold">
+                            Registro de kwts:{" "}
+                          </span>
+                          {payment.kilowats}
+                        </p>
+                        <p className="text-gray-800">
+                          <span className="font-semibold">Consumo kwts: </span>
+                          {payment.mesxkilowats}
+                        </p>
+                      </>
+                    )}
+
                     <p className="text-gray-800">
                       <span className="font-semibold">Luz: </span>
                       {" S/ "}
@@ -157,12 +170,6 @@ export const PaymentList = () => {
                     className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
                   >
                     Actualizar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(payment.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
-                  >
-                    Eliminar
                   </button>
                 </div>
               </li>
