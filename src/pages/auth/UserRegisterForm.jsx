@@ -118,6 +118,7 @@ export const UserRegisterForm = () => {
                 onChange={handleChange}
                 required
                 pattern="[0-9]*"
+                maxLength={9}
                 className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
               <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
@@ -127,7 +128,7 @@ export const UserRegisterForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 cursor-pointer mb-2"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer mb-2"
           >
             Registrar usuario
           </button>

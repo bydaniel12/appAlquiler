@@ -1,33 +1,33 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "../../firebaseconfig";
-import { setDoc, doc } from "firebase/firestore";
-import { UserRegisterForm } from "./UserRegisterForm";
 
 export const Login = () => {
   const { login } = useAuth();
-  const auth = getAuth();
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
   const [msgError, setMsgError] = useState("");
 
-  const handleLoginUser = (e) => {
+  const [formData, setFormData] = useState(() => {
+    return {
+      email: "",
+      password: "",
+    };
+  });
+
+  const handleChange = (e) => {
+    const { name, type, checked, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleLoginUser = async (e) => {
     e.preventDefault();
+    setMsgError("");
     try {
-      if (user === "") {
-        setMsgError("Ingrese el email con formato correcto");
-        return;
-      } else if (pass === "") {
-        setMsgError("Ingrese la contraseña");
-        return;
-      } else {
-        setMsgError("");
-        login(user, pass);
-        //Se redirige al usuario con la ruta protegida a /Inicio
-      }
+      await login(formData.email, formData.password);
+      //Se redirige al usuario con la ruta protegida a /Inicio
     } catch (err) {
-      setMsgError(err.message);
+      setMsgError(err.message || "Credenciales incorrectas");
     }
   };
 
@@ -39,37 +39,42 @@ export const Login = () => {
           className="bg-white p-6 rounded shadow-md w-80"
         >
           <h2 className="text-2xl font-bold mb-6 text-center">Inicia Sesión</h2>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="email">
-              Correo Electrónico
+          <div className="my-6">
+            <label htmlFor="email" className="relative">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder=""
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="peer mt-0.5 p-3 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
+              />
+              <span className="absolute inset-y-0 start-3 -translate-y-5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-5">
+                Email
+              </span>
             </label>
-            <input
-              onChange={(e) => {
-                setUser(e.target.value);
-              }}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              placeholder="Introduce el email"
-              name="email"
-              type="email"
-              required
-            />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="password">
-              Contraseña
+          <div className="my-6">
+            <label htmlFor="password" className="relative">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder=""
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="peer mt-0.5 p-3 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
+              />
+              <span className="absolute inset-y-0 start-3 -translate-y-5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-5">
+                Contraseña
+              </span>
             </label>
-            <input
-              onChange={(e) => {
-                setPass(e.target.value);
-              }}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              placeholder="Introduce la contraseña"
-              name="password"
-              type="password"
-            />
           </div>
           <input
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer mt-3"
             value="Inicia sesión"
             type="submit"
           />
