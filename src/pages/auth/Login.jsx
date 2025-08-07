@@ -1,33 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthProvider";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "../../firebaseconfig";
+import { setDoc, doc } from "firebase/firestore";
+import { UserRegisterForm } from "./UserRegisterForm";
 
 export const Login = () => {
   const { login } = useAuth();
+  const auth = getAuth();
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [msgError, setMsgError] = useState("");
-  const navigate = useNavigate();
-
-  /*
-  const RegistrarUsuario = (e) => {
-    e.preventDefault();
-    createUserWithEmailAndPassword(auth, user, pass)
-      .then((userCredential) => {
-        // loguearse
-        const user = userCredential.user;
-        setMsgError("");
-      })
-      .catch((error) => {
-        if (error.code === "auth/invalid-email") {
-          setMsgError("Formato del Email incorrecto");
-        }
-        if (error.code === "auth/weak-password") {
-          setMsgError("El Password debe tener 6 caracteres o mas");
-        }
-      });
-  };
-  */
+  const [showUserRegisterForm, setShowUserRegisterForm] = useState(false);
 
   const handleLoginUser = (e) => {
     e.preventDefault();
@@ -97,8 +81,26 @@ export const Login = () => {
           ) : (
             <></>
           )}
+
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setShowUserRegisterForm(true);
+            }}
+          >
+            Crear nuevo usuario
+          </div>
         </form>
       </div>
+
+      {showUserRegisterForm && (
+        <UserRegisterForm
+          onClose={() => {
+            setShowTenantForm(false);
+            setEditTenant(null);
+          }}
+        ></UserRegisterForm>
+      )}
     </div>
   );
 };

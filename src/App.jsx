@@ -15,6 +15,8 @@ import { ProtectedRouter } from "./utils/ProtectedRouter.jsx";
 import { Payments } from "./pages/admin/Payments.jsx";
 import { FireStoreProvider } from "./context/FireStoreProvider.jsx";
 import { SearchPayment } from "./pages/admin/SearchPayment.jsx";
+import { UserRegisterForm } from "./pages/auth/UserRegisterForm.jsx";
+import { ProtectedAdminRouter } from "./utils/ProtectedAdminRouter.jsx";
 
 export function App() {
   return (
@@ -52,6 +54,14 @@ export function App() {
                   <Route path="inquilino" element={<Inquilino />} />
                   <Route path="payments/:tenantId" element={<Payments />} />
                   <Route path="search-payment" element={<SearchPayment />} />
+                  <Route
+                    path="register-user"
+                    element={
+                      <ProtectedAdminRouter>
+                        <UserRegisterForm />
+                      </ProtectedAdminRouter>
+                    }
+                  />
                 </Route>
                 <Route element={<PublicLayout />}>
                   <Route index element={<Home />} />

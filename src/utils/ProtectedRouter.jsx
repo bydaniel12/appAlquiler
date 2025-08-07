@@ -5,7 +5,7 @@ export const ProtectedRouter = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-10">Loading...</div>;
   }
 
   if (!currentUser) {
