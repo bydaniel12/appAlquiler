@@ -63,7 +63,21 @@ export function FireStoreProvider({ children }) {
       throw new Error("User not authenticated");
     }
     try {
-      // Delete tenant document from Firestore v9+
+      // Eliminar todos los pagos asociados al inquilino
+      const paymentsRef = collection(
+        db,
+        "users",
+        currentUser.uid,
+        "tenants",
+        tenantId,
+        "payments"
+      );
+      const paymentsSnap = await getDocs(paymentsRef);
+      const deletePromises = paymentsSnap.docs.map((docSnap) =>
+        deleteDoc(docSnap.ref)
+      );
+      await Promise.all(deletePromises);
+      // Eliminar el documento del inquilino
       const tenantRef = doc(db, "users", currentUser.uid, "tenants", tenantId);
       return await deleteDoc(tenantRef);
     } catch (error) {

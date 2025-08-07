@@ -1,10 +1,8 @@
-export const FormatDate = (dateRegister) => {
-  const { dateRegister: fecha } = dateRegister;
+export const FormatDate = (fecha) => {
   let fechaFormateada = "";
-
   try {
     let date;
-    if (!fecha) throw new Error("Fecha vacía");
+    if (fecha == "") return "Fecha vacía";
     if (fecha instanceof Date) {
       date = fecha;
     } else if (typeof fecha === "string") {
@@ -25,7 +23,7 @@ export const FormatDate = (dateRegister) => {
     });
   } catch (e) {
     console.error("Error al formatear fecha:", e);
-    return <>Fecha inválida</>;
+    return "Fecha inválida";
   }
-  return <>{fechaFormateada}</>;
+  return fechaFormateada;
 };
