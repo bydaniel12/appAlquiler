@@ -1,4 +1,4 @@
-  [[build]]
+  [build]
   publish = "dist" # Ensure this points to your build folder
   command = "npm run build" # Adjust this if your build command is different
  [[redirects]]
