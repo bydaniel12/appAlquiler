@@ -155,16 +155,21 @@ export const TenantList = () => {
                     </p>
                     <p className="text-gray-800">
                       <span className="font-semibold">Renta Mensual: </span>
+                      {" S/ "}
                       {tenant.rent}
                     </p>
                     <p className="text-gray-800">
-                      <span className="font-semibold">Garantia: </span>{" "}
+                      <span className="font-semibold">Garantia: </span>
+                      {" S/ "}
                       {tenant.warranty}
                     </p>
-                    <p className="text-gray-800">
-                      <span className="font-semibold">Comentario: </span>{" "}
-                      {tenant.comment}
-                    </p>
+                    {tenant.comment && (
+                      <p className="text-gray-800">
+                        <span className="font-semibold">Comentario: </span>{" "}
+                        {tenant.comment}
+                      </p>
+                    )}
+
                     <p className="text-gray-800">
                       <span className="font-semibold">Fecha de Ingreso: </span>{" "}
                       {FormatDate(tenant.dateInit)}

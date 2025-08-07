@@ -1,3 +1,5 @@
+import medidorLuz from "../../assets/medidorluz.webp";
+
 export const Home = () => {
   return (
     <div className="container mx-auto px-8 py-8">
@@ -15,6 +17,18 @@ export const Home = () => {
           por roles (admin/usuario) para mayor seguridad. Todo integrado con
           Firebase y una interfaz moderna en React.
         </p>
+        <p className="text-black mb-2">
+          Cuando se crea un nuevo inquilino tienes la opcion de habilitar
+          medidor de luz y registrar los kilowats con el que esta comenzando el
+          inquilino.
+        </p>
+        <div className="flex justify-center">
+          <img
+            src={medidorLuz}
+            alt="Medidor de luz"
+            className="w-40 h-auto rounded shadow"
+          />
+        </div>
       </div>
     </div>
   );

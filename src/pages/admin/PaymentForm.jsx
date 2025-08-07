@@ -249,7 +249,7 @@ export const PaymentForm = ({
                 className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
               <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
-                Internet
+                Internet (Opcional)
               </span>
             </label>
           </div>
@@ -266,7 +266,7 @@ export const PaymentForm = ({
                 className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
               <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
-                Deuda
+                Deuda (Opcional)
               </span>
             </label>
           </div>
@@ -283,7 +283,7 @@ export const PaymentForm = ({
                 className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
               <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
-                Comentario
+                Comentario (Opcional)
               </span>
             </label>
           </div>

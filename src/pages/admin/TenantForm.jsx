@@ -65,14 +65,16 @@ export const TenantForm = ({ onClose, onTenantAdd, beanEditTenant }) => {
         <form onSubmit={handleSubmit}>
           <div className="my-4">
             <div className="flex justify-start">
-              <p className="text-black">Tiene un medidor de luz? Activalo!</p>
+              <p className="text-black font-medium">
+                Tiene un medidor de luz? Activalo!
+              </p>
               <input
                 type="checkbox"
                 id="lightMeter"
                 name="lightMeter"
                 checked={formData.lightMeter}
                 onChange={handleChange}
-                className="ml-2 rounded"
+                className="ml-2 rounded scale-120"
               ></input>
             </div>
           </div>
@@ -220,7 +222,7 @@ export const TenantForm = ({ onClose, onTenantAdd, beanEditTenant }) => {
                 className="peer mt-0.5 p-2 w-full rounded border-gray-400 border-1 shadow-sm sm:text-sm"
               />
               <span className="absolute inset-y-0 start-3 -translate-y-4.5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4.5">
-                Comentario
+                Comentario (Opcional)
               </span>
             </label>
           </div>
