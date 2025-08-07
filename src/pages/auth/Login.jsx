@@ -11,7 +11,6 @@ export const Login = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [msgError, setMsgError] = useState("");
-  const [showUserRegisterForm, setShowUserRegisterForm] = useState(false);
 
   const handleLoginUser = (e) => {
     e.preventDefault();
@@ -81,26 +80,8 @@ export const Login = () => {
           ) : (
             <></>
           )}
-
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              setShowUserRegisterForm(true);
-            }}
-          >
-            Crear nuevo usuario
-          </div>
         </form>
       </div>
-
-      {showUserRegisterForm && (
-        <UserRegisterForm
-          onClose={() => {
-            setShowTenantForm(false);
-            setEditTenant(null);
-          }}
-        ></UserRegisterForm>
-      )}
     </div>
   );
 };
