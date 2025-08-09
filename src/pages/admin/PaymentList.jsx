@@ -182,7 +182,7 @@ export const PaymentList = () => {
                       `*Hola ${tenantName}, le dejo un detalle del monto a pagar, ${FormatDate(
                         payment.fecha
                       )}*\n` +
-                        `*- Estado: ${payment.status}*\n` +
+                        `\n*- Estado: ${payment.status}*\n` +
                         `- Kilowats registrado: ${payment.kilowats}\n` +
                         `- Kilowats consumido: ${payment.mesxkilowats}\n` +
                         `- Luz: S/ ${payment.montoxkilowats}\n` +
@@ -194,7 +194,9 @@ export const PaymentList = () => {
                         `- Renta Mensual: S/ ${tenantRent}\n` +
                         `${payment.deuda && `- Deuda: S/ ${payment.deuda}\n`}` +
                         `${payment.comment && `- Nota: ${payment.comment}\n`}` +
-                        `*- Monto total a pagar: S/ ${getMontoTotal(payment)}*`
+                        `\n*- Monto total a pagar: S/ ${getMontoTotal(
+                          payment
+                        )}*`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
