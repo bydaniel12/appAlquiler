@@ -208,7 +208,7 @@ export const TenantList = () => {
                         `- Teléfono: ${tenant.phone}\n` +
                         `- Renta Mensual: ${tenant.rent}\n` +
                         `- Garantía: ${tenant.warranty}\n` +
-                        `- Nota: ${tenant.comment}\n` +
+                        `${tenant.comment && `- Nota: ${tenant.comment}\n`}` +
                         `- Fecha de Ingreso: ${FormatDate(tenant.dateInit)}\n` +
                         `- Fecha de Salida: ${FormatDate(tenant.dateFin)}`
                     )}`}

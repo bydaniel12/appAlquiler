@@ -14,7 +14,7 @@ export const PaymentList = () => {
     lightMeter: tenantLightMeter,
     numberKilowatsInit: tenantNumberKilowatsInit,
   } = location.state || {};
-  const { getPayments, deletePayment } = useFireStore();
+  const { getPayments } = useFireStore();
   const [payments, setPayments] = useState([]);
   const { currentUser } = useAuth();
   const [showPaymentForm, setShowPaymentForm] = useState(false);
@@ -182,18 +182,18 @@ export const PaymentList = () => {
                       `*Hola ${tenantName}, le dejo un detalle del monto a pagar, ${FormatDate(
                         payment.fecha
                       )}*\n` +
-                        `- Estado: ${payment.status}\n` +
+                        `*- Estado: ${payment.status}*\n` +
                         `- Kilowats registrado: ${payment.kilowats}\n` +
                         `- Kilowats consumido: ${payment.mesxkilowats}\n` +
                         `- Luz: S/ ${payment.montoxkilowats}\n` +
                         `- Agua: S/ ${payment.agua}\n` +
                         `${
                           payment.internet &&
-                          `- Internet: S/ ${payment.internet}`
-                        }\n` +
+                          `- Internet: S/ ${payment.internet}\n`
+                        }` +
                         `- Renta Mensual: S/ ${tenantRent}\n` +
-                        `${payment.deuda && `- Deuda: S/ ${payment.deuda}`}\n` +
-                        `${payment.comment && `- Nota: ${payment.comment}`}\n` +
+                        `${payment.deuda && `- Deuda: S/ ${payment.deuda}\n`}` +
+                        `${payment.comment && `- Nota: ${payment.comment}\n`}` +
                         `*- Monto total a pagar: S/ ${getMontoTotal(payment)}*`
                     )}`}
                     target="_blank"
