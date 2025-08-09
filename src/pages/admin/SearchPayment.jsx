@@ -62,7 +62,7 @@ export const SearchPayment = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+    <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 mt-4 mb-4">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Buscador por Fechas
@@ -170,7 +170,7 @@ export const SearchPayment = () => {
                 )}
               </div>
               <div>
-                Total Renta: S/
+                Total Ganancia en Renta: S/
                 {searchResult.payments.reduce(
                   (acc, p) => acc + (Number(p.rent) || 0),
                   0
@@ -203,7 +203,7 @@ export const SearchPayment = () => {
                           {payment.name}
                         </h3>
                         <p className="text-gray-800 font-semibold">
-                          <FormatDate dateRegister={payment.fecha} />
+                          {FormatDate(payment.fecha)}
                         </p>
                         <p className="text-gray-600 mt-1">
                           Renta: S/{payment.rent}
@@ -214,12 +214,16 @@ export const SearchPayment = () => {
                         <p className="text-gray-600 mt-1">
                           Agua: S/{payment.agua}
                         </p>
-                        <p className="text-gray-600 mt-1">
-                          Deuda: S/{payment.deuda}
-                        </p>
-                        <p className="text-gray-600 mt-1">
-                          Comentario: {payment.comment}
-                        </p>
+                        {payment.deuda && (
+                          <p className="text-gray-600 mt-1">
+                            Deuda: S/{payment.deuda}
+                          </p>
+                        )}
+                        {payment.comment && (
+                          <p className="text-gray-600 mt-1">
+                            Comentario: {payment.comment}
+                          </p>
+                        )}
                       </div>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${

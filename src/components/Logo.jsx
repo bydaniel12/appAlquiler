@@ -12,7 +12,7 @@ export const Logo = () => {
         alt="Logotipo de la empresa - diseño moderno con gradiente azul y letras blancas"
         className="h-10 w-10 rounded"
       />
-      <span className="ml-2 text-xl font-bold text-gray-800">AppAlquiler</span>
+      <span className="ml-2 text-xl font-bold text-gray-800">AppRental</span>
     </div>
   );
 };
